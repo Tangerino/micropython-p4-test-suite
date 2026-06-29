@@ -17,15 +17,19 @@ Every peripheral is its own package; `main.py` is a top-level selector.
 ## Quick start
 
 ```sh
-# 1. Flash MicroPython for the ESP32-P4 (>= v1.29.0-preview, C6_WIFI variant).
+# 1. Clone this repo.
+git clone https://github.com/Tangerino/micropython-p4-test-suite.git
+cd micropython-p4-test-suite
+
+# 2. Flash MicroPython for the ESP32-P4 (>= v1.29.0-preview, C6_WIFI variant).
 #    microSD needs this; every other test also runs on older builds.
 #    See firmware/BUILD.md (download a prebuilt image or build your own).
 
-# 2. Point at your board and set WiFi credentials.
+# 3. Point at your board and set WiFi credentials.
 export PORT=/dev/tty.usbmodemXXXX     # your serial port (or edit deploy.sh)
 cp secrets_example.py secrets.py      # then edit WIFI_SSID / WIFI_PASSWORD
 
-# 3. Deploy and run.
+# 4. Deploy and run.
 ./deploy.sh             # upload everything + open the interactive menu
 ./deploy.sh --system    # ...or a one-shot report for a single test
 ./deploy.sh --help      # all options
