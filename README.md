@@ -4,6 +4,14 @@
 ![Board](https://img.shields.io/badge/board-ESP32--P4--NANO-orange)
 ![License](https://img.shields.io/badge/License-MIT-green.svg)
 
+<p align="center">
+  <a href="https://www.waveshare.com/product/arduino/boards-kits/esp32-p4/esp32-p4-nano.htm" target="_blank" rel="noopener noreferrer">
+    <img src="https://www.waveshare.com/media/catalog/product/cache/1/image/560x560/9df78eab33525d08d6e5fb8d27136e95/e/s/esp32-p4-nano-1.jpg" alt="Waveshare ESP32-P4-NANO board" width="360">
+  </a>
+  <br>
+  <sub>Waveshare ESP32-P4-NANO — image © Waveshare, linked from the <a href="https://www.waveshare.com/product/arduino/boards-kits/esp32-p4/esp32-p4-nano.htm">product page</a>.</sub>
+</p>
+
 MicroPython hardware diagnostics for the **Waveshare ESP32-P4-NANO** — eight
 self-contained tests (WiFi, Ethernet, CPU/memory/flash, microSD, I2C,
 sleep/wake, audio, GPIO), each with a one-shot report and an interactive menu.
