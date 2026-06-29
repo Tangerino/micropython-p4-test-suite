@@ -14,6 +14,59 @@ Every peripheral is its own package; `main.py` is a top-level selector.
 > `*/diag.py`. Pins are sourced from Waveshare's schematic and examples (cited
 > per section).
 
+## Why I built this
+
+I bought the ESP32-P4-NANO excited by its specs — and then spent days fighting
+it. A brand-new board paired with a bleeding-edge MicroPython build is a rough
+place to start: scattered pin maps, a WiFi co-processor reached over SDIO, a
+microSD slot that only works on a preview firmware, half-documented peripherals,
+and error messages that tell you nothing about *which* of the dozen new things
+just broke. Every "hello world" turned into an afternoon of guessing whether the
+fault was my wiring, my firmware, or the chip.
+
+I wrote these tests so the next person doesn't have to. Each one answers a single
+honest question — *does the WiFi work? does the SD card mount? does audio play?* —
+with a clear pass/fail report instead of a stack trace. Flash the firmware, run
+the menu, and within minutes you know exactly what's alive on your board and what
+needs attention. It's the toolkit I wish I'd had on day one.
+
+There's a second reason these tests exist: they double as **worked examples**. If
+you're new to MicroPython or to this board, don't just run them — read them. Each
+`*/diag.py` is a small, self-contained, heavily-commented walkthrough of how to
+actually talk to one peripheral: the right pins, the correct config kwargs, how to
+open and close the device, and what a healthy result looks like. Want to scan an
+I2C bus, mount the SD card, play a tone, or bring up WiFi in your own project?
+Open the matching file, copy the dozen lines that matter, and adapt. They're meant
+to be stolen from.
+
+If it saves you even one of those lost afternoons, it did its job. Issues, fixes,
+and pin maps for other ESP32-P4 boards are very welcome — pay it forward. 🙂
+
+### Bugs I hit (and what I did about them)
+
+A few of the walls I ran into, in case you're staring at the same error:
+
+- **microSD timed out on stock firmware (`ESP_ERR_TIMEOUT`).** The slot's LDO
+  power rail never came up, because the `ldo=` kwarg that drives it didn't exist
+  until MicroPython commit `dc44bdbac` (2026-04-02, see
+  [issue #18984](https://github.com/micropython/micropython/issues/18984)). Older
+  builds reject the kwarg outright (`extra keyword arguments given`). **Fix:**
+  flash `v1.29.0-preview` or newer. **Workaround in code:** `sdcard/diag.py`
+  detects the old firmware and prints a plain-English message instead of a cryptic
+  timeout, so you know it's the firmware and not your card or wiring.
+- **WiFi and microSD fought each other.** WiFi on the P4-NANO runs on the onboard
+  ESP32-C6 over the esp-hosted link, which a plain `ESP32_GENERIC_P4` master build
+  may not include — so chasing the microSD fix by flashing master can *lose* WiFi.
+  **Workaround:** cherry-pick the three SD commits onto the Waveshare/vendor source
+  that already wires up the C6, rather than flashing stock master. Full recipe in
+  [`firmware/BUILD.md`](firmware/BUILD.md).
+- **Guessing which new thing was broken.** With a new board *and* new firmware,
+  any failure could be wiring, firmware, or silicon. **Fix:** the whole point of
+  this repo — each test isolates one peripheral and reports a clear pass/fail, so
+  you stop guessing.
+
+— Carlos
+
 ## Quick start
 
 ```sh
