@@ -512,8 +512,27 @@ e.down()
 ## Single entry point
 
 On boot the board runs `main.py`, the **top-level selector** (WiFi / Ethernet /
-System / microSD / I2C / Sleep / Audio / GPIO). Each package also exposes its
-own menu and class for direct REPL use:
+System / microSD / I2C / Sleep / Audio / GPIO). This is what greets you over the
+serial console:
+
+```text
+==== ESP32-P4 Hardware Tests ====
+ 1) WiFi  (ESP32-C6, hosted RPC)
+ 2) Ethernet (IP101 PHY, RMII)
+ 3) System (CPU / memory / flash)
+ 4) microSD (SDMMC)
+ 5) I2C bus scan
+ 6) Sleep / wake
+ 7) Audio (ES8311 speaker)
+ 8) GPIO (blink/read any pin)
+ 9) Serial loopback (4 UARTs, HW)
+10) BLE (ESP32-C6, hosted)
+11) Threads (dual-core, IPC, perf)
+ 0) Exit
+Choose:
+```
+
+Each package also exposes its own menu and class for direct REPL use:
 
 ```python
 import system
